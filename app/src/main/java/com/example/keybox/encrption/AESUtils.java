@@ -7,6 +7,7 @@ import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 
 public class AESUtils {
+
     private static final int KEY_SIZE = 128;
     private static final String ALGORITHM = "AES";
     private static final String RNG_ALGORITHM = "SHA1PRNG";
