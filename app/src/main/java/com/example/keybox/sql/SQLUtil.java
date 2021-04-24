@@ -33,16 +33,27 @@ public class SQLUtil {
         return true;
     }
 
+    public static boolean deleteKey(Context context, int keyId){
+        helper = new KeyBoxDatabaseHelper(context,"KeyBox.db",null,1);
+        SQLiteDatabase database = helper.getReadableDatabase();
+        long deleteResult = database.delete("key_box","id = ?", new String[]{""+keyId+""});
+        if(deleteResult == -1){
+            return false;
+        }
+        return true;
+    }
+
     public static List<Key> queryAllKeys(Context context) {
         helper = new KeyBoxDatabaseHelper(context,"KeyBox.db",null,1);
         SQLiteDatabase database = helper.getReadableDatabase();
         Cursor cursor = database.query("key_box",null,null,null,null,null,null);
         List<Key> keys = new ArrayList<>();
         while (cursor.moveToNext()) {
+            int keyId = cursor.getInt(cursor.getColumnIndex("id"));
             String keyName = cursor.getString(cursor.getColumnIndex("key_name"));
             String username = cursor.getString(cursor.getColumnIndex("username"));
             String keyContent = cursor.getString(cursor.getColumnIndex("key_content"));
-            Key key = new Key(keyName, username, keyContent);
+            Key key = new Key(keyId, keyName, username, keyContent);
             keys.add(key);
         }
         return keys;

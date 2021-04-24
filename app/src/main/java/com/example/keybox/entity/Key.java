@@ -2,15 +2,22 @@ package com.example.keybox.entity;
 
 public class Key {
 
+    private int keyId;
     private String keyName;
     private String username;
     private String keyContent;
 
-    public Key(String keyName, String username, String keyContent) {
+
+    public Key(int keyId, String keyName, String username, String keyContent) {
+        this.keyId = keyId;
         this.keyName = keyName;
         this.username = username;
         this.keyContent = keyContent;
     }
+
+    public int getKeyId(){ return keyId; }
+
+    public void setKeyId(int keyId){ this.keyId = keyId; }
 
     public String getUsername() {
         return username;

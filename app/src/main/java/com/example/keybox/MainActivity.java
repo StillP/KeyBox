@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private void initKeyList() {
         keyList = new ArrayList<>();
         keyList = SQLUtil.queryAllKeys(this);
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.add:
-                addActivity();break;
+                addActivity();
+                break;
             default:
                 break;
         }
