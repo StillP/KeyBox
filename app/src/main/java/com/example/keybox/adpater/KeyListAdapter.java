@@ -2,6 +2,7 @@ package com.example.keybox.adpater;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.keybox.AddActivity;
 import com.example.keybox.MainActivity;
 import com.example.keybox.R;
+import com.example.keybox.encrption.AESUtils;
 import com.example.keybox.entity.Key;
 import com.example.keybox.sql.SQLUtil;
 
@@ -21,6 +23,7 @@ import java.util.List;
 public class KeyListAdapter extends RecyclerView.Adapter<KeyListAdapter.ViewHolder> {
 
     private List<Key> keyList;
+    final String MAIN_PASSWORD = "password";
 
     public KeyListAdapter(List<Key> keyList) {
         this.keyList = keyList;
@@ -56,7 +59,28 @@ public class KeyListAdapter extends RecyclerView.Adapter<KeyListAdapter.ViewHold
                 if(deleteSuccess){
                     Toast.makeText(v.getContext(),"删除成功", Toast.LENGTH_SHORT).show();
                     MainActivity.actionStart(v.getContext());
+                }else {
+                    Toast.makeText(v.getContext(),"删除失败", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        holder.keyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keyContent = key.getKeyContent();
+//                System.out.println(keyContent);
+                try {
+//                    byte[] content = Base64.decode(keyContent.getBytes(), Base64.DEFAULT);
+//                    System.out.println(new String(content));
+                     keyContent= AESUtils.decrypt(MAIN_PASSWORD,keyContent);
+//                    keyContent = new String(content);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("keyId=="+key.getKeyId());
+                System.out.println("keyContent=="+keyContent);
+
             }
         });
         // holder.username.setText(key.getUsername());

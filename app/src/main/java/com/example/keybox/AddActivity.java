@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.keybox.encrption.AESUtils;
 import com.example.keybox.sql.SQLUtil;
 
 public class AddActivity extends AppCompatActivity {
@@ -23,6 +26,7 @@ public class AddActivity extends AppCompatActivity {
     EditText keyContentInput;
     LinearLayout parent;
     Button complete;
+    final String MAIN_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,15 @@ public class AddActivity extends AppCompatActivity {
                 if (keyName.equals("") || username.equals("") || keyContent.equals("")) {
                     Toast.makeText(AddActivity.this,"有内容未填写",Toast.LENGTH_SHORT).show();
                 } else {
+                    try {
+                        keyContent = AESUtils.encrypt(MAIN_PASSWORD,keyContent);
+//                        System.out.println(new String(content));
+//                        byte[] content = Base64.encode(keyContent.getBytes(),Base64.DEFAULT);
+//                        keyContent = new String(content);
+//                        System.out.println(keyContent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     boolean insertSuccess = SQLUtil.insertKey(AddActivity.this,keyName, username, keyContent);
                     if (insertSuccess){
                         Toast.makeText(AddActivity.this,"添加成功", Toast.LENGTH_SHORT).show();
